@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   str_backtracking.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkokorev <mkokorev@student.42berlin.d>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:06:17 by mkokorev          #+#    #+#             */
-/*   Updated: 2024/11/08 19:01:06 by mkokorev         ###   ########.fr       */
+/*   Updated: 2024/11/08 19:08:23 by mkokorev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	ft_permutations(char *str, int len, int idx)
 {
 	int	i;
 
-	i = 0;
 	if (idx == len - 1)
 	{
 		puts(str);
@@ -63,6 +62,5 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	len = ft_strlen(argv[1]);
-	printf("len: %d\n", len);
 	ft_permutations(argv[1], len, 0);
 }
