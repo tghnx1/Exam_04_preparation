@@ -1,6 +1,3 @@
-
-Here is the text from the assignment displayed on your screen:
-
 Assignment name: powerset
 
 Expected files: *.c, *.h
@@ -17,8 +14,6 @@ You will not test with invalid sets (for example '11 1 2').
 
 For example this should work:
 
-shell
-Копировать код
 $> ./powerset 3 1 0 2 3 | cat -e
 0 3$
 1 2$
