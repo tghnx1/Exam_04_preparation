@@ -37,18 +37,6 @@ int	*ft_parce(char **argv, int num, int *first)
 	return (arr);
 }
 
-void	ft_print_arr(int *arr, int num)
-{
-	int	i;
-	
-	i = 0;
-	while (i < num)
-	{
-		fprintf(stdout, "arr: %d\n", arr[i]);
-		i++;
-	}
-}
-
 void	ft_print_arr_space(int *arr, int num)
 {
 	int	i;
@@ -59,84 +47,25 @@ void	ft_print_arr_space(int *arr, int num)
 		fprintf(stdout, "%d ", arr[i]);
 		i++;
 	}
+	fprintf(stdout, "\n");
 }
 
-int	ft_count_base_num(int idx, int *arr)
+void	ft_backtrack(int idx, int num, int *arr, int first, int sum, int *subset, int subset_size)
 {
-	int	i;
-	int	base_num;
-	
-	i = 0;
-	base_num = 0;
-	while (i <= idx)
+	if (sum == first)
 	{
-		base_num = base_num + arr[i];
-		i++;
+		ft_print_arr_space(subset, subset_size);
+		return ;
 	}
-	return (base_num);
-}
-
-int	*ft_make_arr_base(int idx, int *arr)
-{
-	int	*arr_base;
-	int	i;
-	
-	arr_base = (int *)malloc(sizeof(int) * (idx + 1));
-	if (!arr)
+	if (sum > first || idx >= num )
 	{
-		fprintf(stderr, "Error: Memory allocation failed.\n");
-		return (NULL);
+		return;
 	}
-	i = 0;
-	while (i <= idx)
-	{
-		arr_base[i] = arr[i];
-		i++;
-	}
-	return (arr_base);
-}
-
-void	ft_combinations(int idx, int num, int *arr, int first)
-{
-	int	i;
-	int	base_num;
-	int	*arr_base;
-	int	sum;
-
-
-	//if (idx == num - 1)
-	//	return ;
-	//ft_combinations(idx + 1, num, arr, first);
-	if (arr[0] == first)
-		fprintf(stdout, "%d\n", arr[0]);
-	while (idx < num)
-	{
-		base_num = ft_count_base_num(idx, arr);
-		//printf("base num : %d\n", base_num);
-		arr_base = ft_make_arr_base(idx, arr);
-		if (!arr_base)
-			return ;
-		//ft_print_arr(arr_base, idx + 1);
-		i = idx + 1;
-		while (i < num)
-		{
-			sum = base_num + arr[i];
-			if (sum == first)
-			{
-				ft_print_arr_space(arr_base, idx + 1);
-				fprintf(stdout, "%d\n", arr[i]);
-			}
-			sum = base_num - arr[i];
-			i++;
-		}
-		free(arr_base);
-		idx++;
-	}
-}
-
-void	ft_backtrack(int idx, int num, int *arr, int first)
-{
-	ft_combinations(idx, num, arr, first);
+	subset[subset_size] = arr[idx];
+	//try woth the next number in subset if we add it:
+	ft_backtrack(idx + 1, num, arr, first, sum + arr[idx], subset, subset_size + 1);
+	//try if not add: we move but don't add
+	ft_backtrack(idx + 1, num, arr, first, sum, subset, subset_size);
 }
 
 int main (int argc, char **argv)
@@ -144,8 +73,9 @@ int main (int argc, char **argv)
 	int *arr;
 	int num;
 	int first;
+	int *subset;
 	
-	if (argc < 2)
+	if (argc < 3)
 	{
 		fprintf(stdout, "put more arguments!\n");
 		return (0);
@@ -154,8 +84,14 @@ int main (int argc, char **argv)
 	arr = ft_parce(argv, num, &first);
 	if (!arr)
 		return (1);
-	//fprintf(stdout, "first: %d\n", first);
-	//ft_print_arr(arr, num);
-	ft_backtrack(0, num, arr, first);
-	return (1);
+	subset = (int *)malloc(sizeof(int) * num);
+	if (!subset)
+	{
+		free(arr);
+		return (1);
+	}
+	ft_backtrack(0, num, arr, first, 0, subset, 0);
+	free(arr);
+	free(subset);
+	return (0);
 }
